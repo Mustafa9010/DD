@@ -1,0 +1,52 @@
+#include <avr/io.h>
+#include <util/delay.h>
+#include "lcd.h"  // Include the LCD library
+
+// Define LCD pins and other constants
+#define LCD_RS   PB0
+#define LCD_EN   PB1
+#define LCD_D4   PB2
+#define LCD_D5   PB3
+#define LCD_D6   PB4
+#define LCD_D7   PB5
+
+// LCD initialization function
+void lcd_init() {
+    lcd_init(LCD_RS, LCD_EN, LCD_D4, LCD_D5, LCD_D6, LCD_D7);
+}
+
+int main(void) {
+    // Initialize LCD
+    lcd_init();
+    
+    // Set up Serial communication (if needed)
+    // Initialize variables
+    float cp = 0, loopvar = 0;
+    uint8_t B = 0x64; // Byte value
+    // Perform calculations
+    cp = cp + 7;
+    while (B > 0) {
+        B--;
+        cp = cp + 4;
+        loopvar++;
+    }
+    cp = cp + 10 * (loopvar - 1) + 7;
+    float dly = cp * 0.2; // 0.2 is time period of each clock pulse
+    
+    // Initialize LCD
+    lcd.begin(16, 2);
+    lcd.clear();
+    
+    // Display the calculated delay time on the LCD
+    lcd.setCursor(0, 0);
+    lcd.print(dly);
+    lcd.setCursor(0, 1);
+    lcd.print("micro_seconds");
+
+    // Main loop
+    while (1) {
+        // Your main code here
+    }
+    
+    return 0;
+}
